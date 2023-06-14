@@ -23,11 +23,11 @@ public class StructuredConcurrencyDemo {
       throws InterruptedException, ExecutionException {
     try (var scope = new StructuredTaskScope.ShutdownOnFailure()) {
       log("Forking tasks");
-      Subtask<Order> orderFuture = scope.fork(() -> loadOrderFromOrderService(orderId));
+      Subtask<Order> orderSubtask = scope.fork(() -> loadOrderFromOrderService(orderId));
 
-      Subtask<Customer> customerFuture = scope.fork(() -> loadCustomerFromDatabase(customerId));
+      Subtask<Customer> customerSubtask = scope.fork(() -> loadCustomerFromDatabase(customerId));
 
-      Subtask<String> invoiceTemplateFuture =
+      Subtask<String> invoiceTemplateSubtask =
           scope.fork(() -> loadInvoiceTemplateFromFile(language));
 
       log("Waiting for all tasks to finish");
@@ -35,9 +35,9 @@ public class StructuredConcurrencyDemo {
       scope.throwIfFailed();
 
       log("Retrieving results");
-      Order order = orderFuture.get();
-      Customer customer = customerFuture.get();
-      String invoiceTemplate = invoiceTemplateFuture.get();
+      Order order = orderSubtask.get();
+      Customer customer = customerSubtask.get();
+      String invoiceTemplate = invoiceTemplateSubtask.get();
 
       log("Generating invoice");
       Invoice invoice = Invoice.generate(order, customer, invoiceTemplate);
