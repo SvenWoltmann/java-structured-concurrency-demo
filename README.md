@@ -6,6 +6,8 @@ It shows how to run three tasks in parallel using the old `ExecutorService` and 
 
 ## How to Compile
 
+You need Java 21, available for download [here](https://jdk.java.net/21/).
+
 Neither Maven nor IntelliJ support Java 21 at this time (June 2023).
 
 Therefore, you have to compile the application manually:
