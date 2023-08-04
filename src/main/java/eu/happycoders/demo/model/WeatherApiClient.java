@@ -22,7 +22,8 @@ public final class WeatherApiClient {
       throw new RuntimeException("Error loading weather info from provider " + provider);
     }
 
-    log("Finished loading weather info from provider " + provider);
-    return new WeatherInfo();
+    WeatherInfo weatherInfo = new WeatherInfo(ThreadLocalRandom.current().nextDouble(0.0, 45.0));
+    log("Finished loading weather info from provider " + provider + ": " + weatherInfo);
+    return weatherInfo;
   }
 }
