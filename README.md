@@ -22,5 +22,6 @@ And then run the three demos like this:
 java -cp target/classes eu.happycoders.demo.ExecutorServiceDemo
 java -cp target/classes --enable-preview eu.happycoders.demo.StructuredConcurrencyDemo
 java -cp target/classes --enable-preview eu.happycoders.demo.ShutdownOnFailureDemo
+java -cp target/classes --enable-preview eu.happycoders.demo.ShutdownOnSuccessDemo
 java -cp target/classes --enable-preview eu.happycoders.demo.StructuredConcurrencyWithScopedValueDemo
 ```
