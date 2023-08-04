@@ -10,7 +10,12 @@ public final class Repository {
 
   public static Order loadOrderFromOrderService(int orderId) throws InterruptedException {
     log("Loading order");
-    Thread.sleep(ThreadLocalRandom.current().nextLong(500, 1000));
+    try {
+      Thread.sleep(ThreadLocalRandom.current().nextLong(500, 1000));
+    } catch (InterruptedException e) {
+      log("Order loading was interrupted");
+      throw e;
+    }
 
     if (ThreadLocalRandom.current().nextDouble() > 0.8) {
       log("Error loading order");
@@ -23,7 +28,12 @@ public final class Repository {
 
   public static Customer loadCustomerFromDatabase(int customerId) throws InterruptedException {
     log("Loading customer");
-    Thread.sleep(ThreadLocalRandom.current().nextLong(500, 1000));
+    try {
+      Thread.sleep(ThreadLocalRandom.current().nextLong(500, 1000));
+    } catch (InterruptedException e) {
+      log("Customer loading was interrupted");
+      throw e;
+    }
 
     if (ThreadLocalRandom.current().nextDouble() > 0.8) {
       log("Error loading customer");
@@ -36,7 +46,12 @@ public final class Repository {
 
   public static String loadInvoiceTemplateFromFile(String language) throws InterruptedException {
     log("Loading template");
-    Thread.sleep(ThreadLocalRandom.current().nextLong(500, 1000));
+    try {
+      Thread.sleep(ThreadLocalRandom.current().nextLong(500, 1000));
+    } catch (InterruptedException e) {
+      log("Template loading was interrupted");
+      throw e;
+    }
 
     if (ThreadLocalRandom.current().nextDouble() > 0.8) {
       log("Error loading template");
