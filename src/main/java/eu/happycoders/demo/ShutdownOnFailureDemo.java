@@ -12,15 +12,16 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.StructuredTaskScope;
 import java.util.concurrent.StructuredTaskScope.Subtask;
 
-public class StructuredConcurrencyDemo {
+public class ShutdownOnFailureDemo {
 
   public static void main(String[] args) throws ExecutionException, InterruptedException {
-    StructuredConcurrencyDemo demo = new StructuredConcurrencyDemo();
+    ShutdownOnFailureDemo demo = new ShutdownOnFailureDemo();
     demo.createInvoice(10012, 61157, "en");
   }
 
-  Invoice createInvoice(int orderId, int customerId, String language) throws InterruptedException {
-    try (var scope = new StructuredTaskScope<>()) {
+  Invoice createInvoice(int orderId, int customerId, String language)
+      throws InterruptedException, ExecutionException {
+    try (var scope = new StructuredTaskScope.ShutdownOnFailure()) {
       log("Forking tasks");
       Subtask<Order> orderSubtask = scope.fork(() -> loadOrderFromOrderService(orderId));
 
@@ -29,8 +30,9 @@ public class StructuredConcurrencyDemo {
       Subtask<String> invoiceTemplateSubtask =
           scope.fork(() -> loadInvoiceTemplateFromFile(language));
 
-      log("Waiting for all tasks to finish");
+      log("Waiting for all tasks to finish or one to fail");
       scope.join();
+      scope.throwIfFailed();
 
       log("Retrieving results");
       Order order = orderSubtask.get();
